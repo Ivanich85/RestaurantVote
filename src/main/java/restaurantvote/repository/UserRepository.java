@@ -1,6 +1,5 @@
 package restaurantvote.repository;
 
-
 import restaurantvote.model.User;
 import restaurantvote.model.Vote;
 
