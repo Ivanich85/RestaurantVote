@@ -18,10 +18,10 @@ import java.util.Date;
 
 @ContextConfiguration(locations = {
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db-test.xml"
 })
 @RunWith(SpringRunner.class)
-@Sql(scripts = {"classpath:db/initDB_hsql.sql", "classpath:db/populateDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = {"classpath:db/initDB_hsql_test.sql", "classpath:db/populateDB_test.sql"}, config = @SqlConfig(encoding = "UTF-8"))
 @Transactional
 public class UserServiceTest {
 
@@ -41,7 +41,7 @@ public class UserServiceTest {
 
     @Test(expected = PersistenceException.class)
     public void duplicateMailCreate() {
-        User created = service.create(new User(null, "Duplicate", "admin@gmail.com", "newPass", false,
+        service.create(new User(null, "Duplicate", "admin@gmail.com", "newPass", false,
                 new Date(), Collections.singleton(Role.ROLE_USER)));
         service.getAll();
     }
