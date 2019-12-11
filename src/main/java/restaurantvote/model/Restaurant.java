@@ -1,26 +1,28 @@
 package restaurantvote.model;
 
-import java.util.List;
+import restaurantvote.model.values.Vote;
+
+import java.util.Set;
 
 public class Restaurant extends AbstractNamedEntity {
 
-    private List<Vote> ratings;
+    private Set<Vote> ratings;
 
-    private List<Dish> menu;
+    private Set<Dish> menu;
 
-    public List<Vote> getRatings() {
+    public Set<Vote> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<Vote> ratings) {
+    public void setRatings(Set<Vote> ratings) {
         this.ratings = ratings;
     }
 
-    public List<Dish> getMenu() {
+    public Set<Dish> getMenu() {
         return menu;
     }
 
-    public void setMenu(List<Dish> menu) {
+    public void setMenu(Set<Dish> menu) {
         this.menu = menu;
     }
 }

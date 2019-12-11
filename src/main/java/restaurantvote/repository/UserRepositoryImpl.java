@@ -4,7 +4,7 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantvote.model.User;
-import restaurantvote.model.Vote;
+import restaurantvote.model.values.Vote;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

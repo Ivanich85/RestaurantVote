@@ -2,16 +2,14 @@ package restaurantvote.model;
 
 import org.apache.commons.collections.CollectionUtils;
 import restaurantvote.model.values.Role;
+import restaurantvote.model.values.Vote;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id = :id"),
@@ -46,25 +44,36 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_votes", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "vote")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Vote> votes;
+
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private Boolean enabled;
 
     public User() {}
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, new Date(), EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Set<Role> roles, Set<Vote> votes) {
+        this(id, name, email, password, true, new Date(), roles,  votes);
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Set<Role> roles) {
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRegistered(), u.getRoles(), u.getVotes());
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Set<Role> roles, Set<Vote> votes ) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.registered = registered;
         setRoles(roles);
+        setVotes(votes);
     }
 
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
@@ -93,7 +102,15 @@ public class User extends AbstractNamedEntity {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? new HashSet<>() : roles;
+        this.roles = roles;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 
     public void setEnabled(Boolean enabled) {

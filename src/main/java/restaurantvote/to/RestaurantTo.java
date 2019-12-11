@@ -1,10 +1,11 @@
 package restaurantvote.to;
 
 import restaurantvote.model.Dish;
-import restaurantvote.model.Vote;
+import restaurantvote.model.values.Vote;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class RestaurantTo {
 
@@ -12,13 +13,13 @@ public class RestaurantTo {
 
     private final String name;
 
-    private final List<Vote> ratings;
+    private final Set<Vote> ratings;
 
-    private final List<Dish> menu;
+    private final Set<Dish> menu;
 
     private final double averageRating;
 
-    public RestaurantTo(Integer id, String name, List<Vote> ratings, List<Dish> menu, double averageRating) {
+    public RestaurantTo(Integer id, String name, Set<Vote> ratings, Set<Dish> menu, double averageRating) {
         this.id = id;
         this.name = name;
         this.ratings = ratings;
@@ -34,11 +35,11 @@ public class RestaurantTo {
         return name;
     }
 
-    public List<Vote> getRatings() {
+    public Set<Vote> getRatings() {
         return ratings;
     }
 
-    public List<Dish> getMenu() {
+    public Set<Dish> getMenu() {
         return menu;
     }
 

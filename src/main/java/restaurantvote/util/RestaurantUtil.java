@@ -2,11 +2,12 @@ package restaurantvote.util;
 
 import org.apache.commons.collections.CollectionUtils;
 import restaurantvote.model.Restaurant;
-import restaurantvote.model.Vote;
+import restaurantvote.model.values.Vote;
 import restaurantvote.to.RestaurantTo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -36,13 +37,13 @@ public class RestaurantUtil {
     /**
      * Method used into another stream, so using stream here lacks performance
      */
-    private static Double getAverageRating(List<Vote> votes) {
+    private static Double getAverageRating(Set<Vote> votes) {
         double sum = 0d;
         if (CollectionUtils.isEmpty(votes)) {
             return sum;
         }
         for (Vote vote : votes) {
-            sum += vote.getVoteValue().getValue();
+            sum += vote.getValue();
         }
         return sum / votes.size();
     }

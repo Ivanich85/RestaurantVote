@@ -1,7 +1,7 @@
 package restaurantvote.repository;
 
 import restaurantvote.model.User;
-import restaurantvote.model.Vote;
+import restaurantvote.model.values.Vote;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package restaurantvote.model.values;
 
-public enum VoteValue {
+public enum Vote {
     ONE(1),
     TWO(2),
     THREE(3),
@@ -9,7 +9,7 @@ public enum VoteValue {
 
     private Integer value;
 
-    private VoteValue(Integer value) {
+    Vote(Integer value) {
         this.value = value;
     }
 

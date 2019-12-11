@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user_roles;
-DROP TABLE users IF EXISTS;
+DROP TABLE IF EXISTS user_votes;
+DROP TABLE IF EXISTS users;
 
 DROP SEQUENCE global_seq IF EXISTS;
 
@@ -21,5 +22,12 @@ CREATE TABLE user_roles
   user_id INTEGER NOT NULL,
   role    VARCHAR(255),
   CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_votes
+(
+  user_id INTEGER NOT NULL,
+  vote    VARCHAR(32),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
