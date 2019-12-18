@@ -2,11 +2,12 @@ package restaurantvote.model;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity implements Persistable<Integer> {
+public abstract class AbstractBaseEntity implements Persistable<Integer>, Serializable {
     public static final int START_SEQ = 100000;
 
     @Id

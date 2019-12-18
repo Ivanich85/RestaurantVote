@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import restaurantvote.UserTestData;
 import restaurantvote.model.User;
 import restaurantvote.model.values.Role;
 import restaurantvote.util.NotFoundException;
@@ -22,7 +23,7 @@ import static restaurantvote.UserTestData.*;
         "classpath:spring/spring-db-test.xml"
 })
 @RunWith(SpringRunner.class)
-@Sql(scripts = {"classpath:db/initDB_hsql_test.sql", "classpath:db/populateDB_test.sql"}, config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = {"classpath:db/initDB_hsql.sql", "classpath:db/populateDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
 @Transactional
 public class UserServiceTest {
 
@@ -34,6 +35,7 @@ public class UserServiceTest {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", false,
                 new Date(), Collections.singleton(Role.ROLE_USER), userVotes);
         User created = service.create(newUser);
+        User all = service.get(UserTestData.USER_ID);
         Integer newId = created.getId();
         newUser.setId(newId);
         assertMatch(created, newUser);

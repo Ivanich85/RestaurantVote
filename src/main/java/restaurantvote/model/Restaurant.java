@@ -1,14 +1,25 @@
 package restaurantvote.model;
 
-import restaurantvote.model.values.Vote;
-
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name = "restaurants")
 public class Restaurant extends AbstractNamedEntity {
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Vote> ratings;
 
+    @Transient
     private Set<Dish> menu;
+
+    public Restaurant(){
+        super();
+    }
+
+    public Restaurant(int id, String name) {
+        super(id, name);
+    }
 
     public Set<Vote> getRatings() {
         return ratings;

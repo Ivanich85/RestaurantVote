@@ -1,10 +1,9 @@
 package restaurantvote.to;
 
 import restaurantvote.model.Dish;
-import restaurantvote.model.values.Vote;
+import restaurantvote.model.Vote;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class RestaurantTo {

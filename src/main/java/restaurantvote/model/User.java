@@ -2,7 +2,6 @@ package restaurantvote.model;
 
 import org.apache.commons.collections.CollectionUtils;
 import restaurantvote.model.values.Role;
-import restaurantvote.model.values.Vote;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,13 +10,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
+@Entity
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id = :id"),
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email")
 })
-@Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity {
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
@@ -44,10 +43,7 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_votes", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "vote")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private Set<Vote> votes;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
