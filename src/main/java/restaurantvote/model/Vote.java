@@ -2,7 +2,7 @@ package restaurantvote.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_votes")
@@ -16,7 +16,7 @@ public class Vote extends AbstractBaseEntity {
 
     @Column(name = "vote_date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private Date voteDate;
+    private LocalDateTime voteDate;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -36,20 +36,20 @@ public class Vote extends AbstractBaseEntity {
         this.voteDate = v.voteDate;
     }
 
-    public Vote(Integer id, Date voteDate) {
+    public Vote(Integer id, LocalDateTime voteDate) {
         this.id = id;
         this.voteDate = voteDate;
     }
 
     public Vote(Integer id) {
-        this(id, new Date());
+        this(id, LocalDateTime.now());
     }
 
-    public Date getVoteDate() {
+    public LocalDateTime getVoteDate() {
         return voteDate;
     }
 
-    public void setVoteDate(Date voteDate) {
+    public void setVoteDate(LocalDateTime voteDate) {
         this.voteDate = voteDate;
     }
 

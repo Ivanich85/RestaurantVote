@@ -44,4 +44,10 @@ public class UserTestData {
         updated.setRoles(adminRoles);
         return updated;
     }
+
+    public static User getDeleted() {
+        User updated = new User(USER);
+        updated.setEnabled(false);
+        return updated;
+    }
 }

@@ -8,12 +8,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import restaurantvote.UserTestData;
 import restaurantvote.model.User;
 import restaurantvote.model.values.Role;
 import restaurantvote.util.NotFoundException;
 
 import javax.persistence.PersistenceException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static restaurantvote.UserTestData.*;
@@ -33,9 +33,8 @@ public class UserServiceTest {
     @Test
     public void create() {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", false,
-                new Date(), Collections.singleton(Role.ROLE_USER), userVotes);
+                LocalDateTime.now(), Collections.singleton(Role.ROLE_USER), userVotes);
         User created = service.create(newUser);
-        User all = service.get(UserTestData.USER_ID);
         Integer newId = created.getId();
         newUser.setId(newId);
         assertMatch(created, newUser);
@@ -45,7 +44,7 @@ public class UserServiceTest {
     @Test(expected = PersistenceException.class)
     public void duplicateMailCreate() throws Exception {
         service.create(new User(null, "Duplicate", "admin@gmail.com", "newPass", false,
-                new Date(), Collections.singleton(Role.ROLE_USER), userVotes));
+                LocalDateTime.now(), Collections.singleton(Role.ROLE_USER), userVotes));
         service.getAll();
     }
 
@@ -58,8 +57,9 @@ public class UserServiceTest {
 
     @Test
     public void delete() {
+        User deletedUser = getDeleted();
         service.delete(USER_ID);
-        assertMatch(service.getAll(), ADMIN);
+        assertMatch(service.get(USER_ID), deletedUser);
     }
 
     @Test(expected = NotFoundException.class)

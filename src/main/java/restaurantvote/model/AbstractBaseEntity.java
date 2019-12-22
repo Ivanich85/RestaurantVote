@@ -44,7 +44,7 @@ public abstract class AbstractBaseEntity implements Persistable<Integer>, Serial
         if (this == obj) {
             return true;
         }
-        if (Objects.nonNull(obj) || !getClass().equals(obj.getClass())) {
+        if (Objects.isNull(obj) || !getClass().equals(obj.getClass())) {
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) obj;

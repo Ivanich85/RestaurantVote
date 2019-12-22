@@ -7,6 +7,7 @@ import restaurantvote.model.User;
 import restaurantvote.model.Vote;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Transactional
@@ -22,16 +23,26 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     }
 
     @Override
-    public boolean delete(int id) {
-        return manager.createNamedQuery(User.DELETE)
-                .setParameter("id", id)
-                .executeUpdate() != 0;
+    public User delete(int id) {
+        User currentUser = get(id);
+        if (Objects.isNull(currentUser)) {
+            return null;
+        }
+        currentUser.setEnabled(false);
+        return save(currentUser);
     }
 
     @Override
     @Transactional(readOnly = true)
     public User get(int id) {
         return manager.find(User.class, id);
+    }
+
+    @Override
+    public User getWithVotes(int id) {
+        return (User) manager.createNamedQuery(User.WITH_VOTES)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Override
@@ -46,7 +57,6 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     @Override
     @Transactional(readOnly = true)
     public List<User> getAll() {
-        List<User> users = manager.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
         return manager.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
 

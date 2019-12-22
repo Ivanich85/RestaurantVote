@@ -8,19 +8,22 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 @NamedQueries({
-        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id = :id"),
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email"),
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email")
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
+        @NamedQuery(name = User.WITH_VOTES, query = "SELECT u FROM User u LEFT JOIN FETCH u.votes WHERE u.id = :id"),
+        @NamedQuery(name = User.ALL_WITH_VOTES, query = "SELECT u FROM User u LEFT JOIN FETCH u.votes ORDER BY u.name, u.email")
 })
 public class User extends AbstractNamedEntity {
-    public static final String DELETE = "User.delete";
+    public static final String WITH_VOTES = "User.getWithVotes";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
+    public static final String ALL_WITH_VOTES = "User.getAllWithVotes";
 
     @Column(name = "password", nullable = false)
     @NotBlank
@@ -29,7 +32,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private Date registered;
+    private LocalDateTime registered;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -52,14 +55,14 @@ public class User extends AbstractNamedEntity {
     public User() {}
 
     public User(Integer id, String name, String email, String password, Set<Role> roles, Set<Vote> votes) {
-        this(id, name, email, password, true, new Date(), roles,  votes);
+        this(id, name, email, password, true, LocalDateTime.now(), roles,  votes);
     }
 
     public User(User u) {
         this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRegistered(), u.getRoles(), u.getVotes());
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Set<Role> roles, Set<Vote> votes ) {
+    public User(Integer id, String name, String email, String password, boolean enabled, LocalDateTime registered, Set<Role> roles, Set<Vote> votes ) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -77,11 +80,11 @@ public class User extends AbstractNamedEntity {
         this.password = password;
     }
 
-    public Date getRegistered() {
+    public LocalDateTime getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(LocalDateTime registered) {
         this.registered = registered;
     }
 
@@ -102,6 +105,9 @@ public class User extends AbstractNamedEntity {
     }
 
     public Set<Vote> getVotes() {
+        if (Objects.isNull(votes)) {
+            votes = new HashSet<>();
+        }
         return votes;
     }
 
