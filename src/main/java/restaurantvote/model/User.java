@@ -17,13 +17,11 @@ import java.util.*;
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
         @NamedQuery(name = User.WITH_VOTES, query = "SELECT u FROM User u LEFT JOIN FETCH u.votes WHERE u.id = :id"),
-        @NamedQuery(name = User.ALL_WITH_VOTES, query = "SELECT u FROM User u LEFT JOIN FETCH u.votes ORDER BY u.name, u.email")
 })
 public class User extends AbstractNamedEntity {
     public static final String WITH_VOTES = "User.getWithVotes";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
-    public static final String ALL_WITH_VOTES = "User.getAllWithVotes";
 
     @Column(name = "password", nullable = false)
     @NotBlank

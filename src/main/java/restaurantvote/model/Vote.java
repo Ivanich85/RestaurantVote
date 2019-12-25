@@ -7,16 +7,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user_votes")
 @NamedQueries({
-        @NamedQuery(name = Vote.GET_ALL, query="select v from Vote v where v.user.id = :userId order by v.voteDate desc"),
-        @NamedQuery(name = Vote.DELETE, query="delete from Vote v where v.id = :id and v.user.id = :userId")
+        @NamedQuery(name = Vote.DELETE, query="delete from Vote v where v.id = :id and v.user.id = :userId"),
 })
 public class Vote extends AbstractBaseEntity {
-    public static final String GET_ALL = "Vote.getAll";
     public static final String DELETE = "Vote.delete";
 
     @Column(name = "vote_date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private LocalDateTime voteDate;
+    private LocalDateTime creationDate;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -33,24 +31,25 @@ public class Vote extends AbstractBaseEntity {
     public Vote(Vote v) {
         this.id = v.id;
         this.restaurant = v.restaurant;
-        this.voteDate = v.voteDate;
+        this.creationDate = v.creationDate;
     }
 
-    public Vote(Integer id, LocalDateTime voteDate) {
+    public Vote(Integer id, LocalDateTime creationDate, Restaurant restaurant) {
         this.id = id;
-        this.voteDate = voteDate;
+        this.restaurant = restaurant;
+        this.creationDate = creationDate;
     }
 
-    public Vote(Integer id) {
-        this(id, LocalDateTime.now());
+    public Vote(Integer id, Restaurant restaurant) {
+        this(id, LocalDateTime.now(), restaurant);
     }
 
-    public LocalDateTime getVoteDate() {
-        return voteDate;
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    public void setVoteDate(LocalDateTime voteDate) {
-        this.voteDate = voteDate;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Restaurant getRestaurant() {

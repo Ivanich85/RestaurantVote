@@ -4,32 +4,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantvote.model.Vote;
 
-import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Transactional
 public class VoteRepositoryImpl extends AbstractRepository implements VoteRepository {
 
-    @Override
-    @Transactional(readOnly = true)
-    public Vote get(int userId, int id) {
-        Vote vote = manager.find(Vote.class, id);
-        return vote.getUser().getId() == userId ? vote : null;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Vote> getAll(int userId) {
-        return manager.createNamedQuery(Vote.GET_ALL).setParameter("userId", userId).getResultList();
-    }
-
+    /**
+     * Create or delete states only
+     */
     @Override
     public Vote save(Vote vote) {
-        if (vote.isNew()) {
-            manager.persist(vote);
-            return vote;
-        }
-        return manager.merge(vote);
+        manager.persist(vote);
+        return vote;
     }
 
     @Override
@@ -38,5 +25,12 @@ public class VoteRepositoryImpl extends AbstractRepository implements VoteReposi
                 .setParameter("id", id)
                 .setParameter("userId", userId)
                 .executeUpdate() != 0;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Vote get(int id, int userId) {
+        Vote vote = manager.find(Vote.class, id);
+        return Objects.nonNull(vote) && vote.getUser().getId() == userId ? vote : null;
     }
 }

@@ -1,35 +1,23 @@
 package restaurantvote.service;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import restaurantvote.model.Dish;
 import restaurantvote.util.NotFoundException;
 
 import java.math.BigDecimal;
 
 import static restaurantvote.DishTestData.*;
+import static restaurantvote.RestaurantTestData.MC_REST;
 
-@ContextConfiguration(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db-test.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = {"classpath:db/initDB_hsql.sql", "classpath:db/populateDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
-@Transactional
-public class DishServiceTest {
+public class DishServiceTest extends AbstractServiceTest {
 
     @Autowired
     private DishService service;
 
     @Test
     public void create() {
-        Dish newDish = new Dish(DISH_BK_ID_1, "vopper", BigDecimal.valueOf(28050));
+        Dish newDish = new Dish(DISH_BK_ID_1, "vopper", BigDecimal.valueOf(28050), MC_REST);
         Dish created = service.create(newDish);
         Integer newId = created.getId();
         newDish.setId(newId);

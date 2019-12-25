@@ -1,31 +1,17 @@
 package restaurantvote.service;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import restaurantvote.model.User;
 import restaurantvote.model.values.Role;
 import restaurantvote.util.NotFoundException;
-
-import javax.persistence.PersistenceException;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static restaurantvote.UserTestData.*;
 
-@ContextConfiguration(locations = {
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db-test.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = {"classpath:db/initDB_hsql.sql", "classpath:db/populateDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
-@Transactional
-public class UserServiceTest {
+public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService service;
@@ -41,11 +27,10 @@ public class UserServiceTest {
         assertMatch(service.get(newId), newUser);
     }
 
-    @Test(expected = PersistenceException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void duplicateMailCreate() throws Exception {
         service.create(new User(null, "Duplicate", "admin@gmail.com", "newPass", false,
                 LocalDateTime.now(), Collections.singleton(Role.ROLE_USER), userVotes));
-        service.getAll();
     }
 
     @Test
@@ -76,6 +61,12 @@ public class UserServiceTest {
     @Test(expected = NotFoundException.class)
     public void getNotFound() throws Exception {
         service.get(1);
+    }
+
+    @Test
+    public void getWithVotes() {
+        User user = service.getWithVotes(USER_ID);
+        assertMatchWithVotes(user, USER);
     }
 
     @Test

@@ -20,8 +20,8 @@ public class UserTestData {
     public static final Set<Role> userRoles = Stream.of( Role.ROLE_USER).collect(Collectors.toSet());
     public static final Set<Role> adminRoles = Stream.of( Role.ROLE_ADMIN).collect(Collectors.toSet());
 
-    public static final Set<Vote> userVotes = Stream.of(VOTE_USER_1, VOTE_USER_2, VOTE_USER_3).collect(Collectors.toSet());
-    public static final Set<Vote> adminVotes = Stream.of(VOTE_ADMIN_1, VOTE_ADMIN_2).collect(Collectors.toSet());
+    public static final Set<Vote> userVotes = Stream.of(VOTE_USER_1, VOTE_USER_2, VOTE_USER_3, VOTE_USER_4).collect(Collectors.toSet());
+    public static final Set<Vote> adminVotes = Stream.of(VOTE_ADMIN_1).collect(Collectors.toSet());
 
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", userRoles, userVotes);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", adminRoles, adminVotes);
@@ -30,12 +30,16 @@ public class UserTestData {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "votes");
     }
 
+    public static void assertMatchWithVotes(User actual, User expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered");
+    }
+
     public static void assertMatch(Iterable<User> actual, User... expected) {
         assertMatch(actual, Arrays.asList(expected));
     }
 
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("registered", "roles", "votes").isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("registered", "votes").isEqualTo(expected);
     }
 
     public static User getUpdated() {

@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import restaurantvote.model.Dish;
 
 @Repository
-@Transactional
 public class DishRepositoryImpl extends AbstractRepository implements DishRepository {
 
     @Override

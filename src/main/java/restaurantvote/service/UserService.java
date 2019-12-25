@@ -34,6 +34,10 @@ public class UserService {
         return ValidationUtil.checkNotFoundWithId(repository.get(id), id);
     }
 
+    public User getWithVotes(int id) throws NotFoundException {
+        return ValidationUtil.checkNotFoundWithId(repository.getWithVotes(id), id);
+    }
+
     public User getByEmail(String email) throws NotFoundException {
         return ValidationUtil.checkNotFound(repository.getByEmail(email), "email=" + email);
     }

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-@Transactional
 public class UserRepositoryImpl extends AbstractRepository implements UserRepository {
 
     @Override

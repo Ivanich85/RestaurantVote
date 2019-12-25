@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "dishes")
 @NamedQueries({
-        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d where d.id = :id")
+        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d where d.id = :id"),
 })
 public class Dish extends AbstractNamedEntity {
     public final static String DELETE = "Dish.delete";
@@ -28,11 +28,15 @@ public class Dish extends AbstractNamedEntity {
 
     public Dish(){}
 
-    public Dish(Integer id, String name, BigDecimal price) {
+    public Dish(Integer id, String name, BigDecimal price, Restaurant restaurant) {
+        this(id, LocalDateTime.now(), name, price, restaurant);
+    }
+
+    public Dish(Integer id, LocalDateTime creationDate, String name, BigDecimal price, Restaurant restaurant) {
         super(id, name);
-        this.creationDate = LocalDateTime.now();
-        this.name = name;
+        this.creationDate = creationDate;
         this.price = price;
+        this.restaurant = restaurant;
     }
 
     public Dish(Dish dish) {
@@ -40,6 +44,7 @@ public class Dish extends AbstractNamedEntity {
         this.creationDate = dish.creationDate;
         this.name = dish.name;
         this.price = dish.price;
+        this.restaurant = dish.restaurant;
     }
 
     public BigDecimal getPrice() {

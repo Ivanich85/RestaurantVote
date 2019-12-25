@@ -1,8 +1,7 @@
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import restaurantvote.model.User;
-import restaurantvote.repository.UserRepository;
-import restaurantvote.repository.UserRepositoryImpl;
+import restaurantvote.model.Dish;
+import restaurantvote.service.DishService;
 
 import java.util.Arrays;
 
@@ -12,8 +11,9 @@ public class RestaurantVote {
         System.out.println(Arrays.toString(ctx.getBeanDefinitionNames()));
         ((ClassPathXmlApplicationContext) ctx).refresh();
 
-        UserRepository userRepository = (UserRepositoryImpl) ctx.getBean("userRepositoryImpl");
-        User user = userRepository.getWithVotes(100000);
+        DishService dishService = (DishService) ctx.getBean("dishService");
+        dishService.delete(100009);
+        Dish dish = dishService.get(100009);
         ((ClassPathXmlApplicationContext) ctx).close();
     }
 }
