@@ -7,6 +7,8 @@ import restaurantvote.repository.DishRepository;
 import restaurantvote.util.NotFoundException;
 import restaurantvote.util.ValidationUtil;
 
+import java.util.List;
+
 @Service
 public class DishService {
     private DishRepository repository;
@@ -24,11 +26,15 @@ public class DishService {
         ValidationUtil.checkNotFoundWithId(repository.save(dish), dish.getId());
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws NotFoundException {
         ValidationUtil.checkNotFoundWithId(repository.delete(id), id);
     }
 
     public Dish get(int id) throws NotFoundException {
         return ValidationUtil.checkNotFoundWithId(repository.get(id), id);
+    }
+
+    public List<Dish> getAllEnabledForRestaurant(int restaurantId) {
+        return repository.getAllEnabledForRestaurant(restaurantId);
     }
 }

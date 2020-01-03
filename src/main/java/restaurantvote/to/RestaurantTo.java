@@ -9,21 +9,15 @@ import java.util.Set;
 public class RestaurantTo {
 
     private final Integer id;
-
     private final String name;
-
     private final Set<Vote> ratings;
+    private final Set<Dish> dishes;
 
-    private final Set<Dish> menu;
-
-    private final double averageRating;
-
-    public RestaurantTo(Integer id, String name, Set<Vote> ratings, Set<Dish> menu, double averageRating) {
+    public RestaurantTo(Integer id, String name, Set<Vote> ratings, Set<Dish> dishes) {
         this.id = id;
         this.name = name;
         this.ratings = ratings;
-        this.menu = menu;
-        this.averageRating = averageRating;
+        this.dishes = dishes;
     }
 
     public Integer getId() {
@@ -38,21 +32,17 @@ public class RestaurantTo {
         return ratings;
     }
 
-    public Set<Dish> getMenu() {
-        return menu;
-    }
-
-    public double getAverageRating() {
-        return averageRating;
+    public Set<Dish> getDishes() {
+        return dishes;
     }
 
     @Override
     public String toString() {
-        return "RestaurantTo{" +
+        return "RestaurantTo {" +
                 "id=" + id +
                 ", name=" + name +
-                ", menu='" + Arrays.deepToString(menu.toArray()) + '\'' +
-                ", averageRating=" + averageRating +
+                ", rating='" + ratings +
+                ", dishes='" + Arrays.deepToString(dishes.toArray()) + '\'' +
                 '}';
     }
 }

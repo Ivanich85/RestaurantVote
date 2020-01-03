@@ -7,11 +7,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "dishes")
+@NamedNativeQueries({
+        @NamedNativeQuery(name = Dish.DELETE, query = "UPDATE dishes set enabled = 0 where id = :id")
+})
 @NamedQueries({
-        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d where d.id = :id"),
+        @NamedQuery(name = Dish.GET_ALL_ENABLED_FOR_RESTAURANT,
+                query = "select d from Dish d where d.restaurant.id = :restaurantId and d.enabled = true")
 })
 public class Dish extends AbstractNamedEntity {
     public final static String DELETE = "Dish.delete";
+    public final static String GET_ALL_ENABLED_FOR_RESTAURANT = "Dish.getAllEnabledForRestaurant";
 
     @Column(name = "creation_date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
@@ -26,25 +31,30 @@ public class Dish extends AbstractNamedEntity {
     @NotNull
     private Restaurant restaurant;
 
+    @Column(name = "enabled", nullable = false)
+    @NotNull
+    private Boolean enabled;
+
     public Dish(){}
 
-    public Dish(Integer id, String name, BigDecimal price, Restaurant restaurant) {
-        this(id, LocalDateTime.now(), name, price, restaurant);
+    public Dish(Integer id, String name, BigDecimal price, Restaurant restaurant, Boolean enabled) {
+        this(id, LocalDateTime.now(), name, price, restaurant, enabled);
     }
 
-    public Dish(Integer id, LocalDateTime creationDate, String name, BigDecimal price, Restaurant restaurant) {
+    public Dish(Integer id, LocalDateTime creationDate, String name, BigDecimal price, Restaurant restaurant, Boolean enabled) {
         super(id, name);
         this.creationDate = creationDate;
         this.price = price;
         this.restaurant = restaurant;
+        this.enabled = enabled;
     }
 
     public Dish(Dish dish) {
         super(dish.id, dish.name);
         this.creationDate = dish.creationDate;
-        this.name = dish.name;
         this.price = dish.price;
         this.restaurant = dish.restaurant;
+        this.enabled = dish.enabled;
     }
 
     public BigDecimal getPrice() {
@@ -70,5 +80,13 @@ public class Dish extends AbstractNamedEntity {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

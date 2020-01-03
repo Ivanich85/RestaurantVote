@@ -39,7 +39,7 @@ CREATE TABLE user_votes
   user_id     INTEGER NOT NULL,
   restaurant_id INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id),
-  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) on delete cascade
 );
 
 create table dishes
@@ -49,5 +49,6 @@ create table dishes
   name          varchar(255),
   price         DOUBLE NOT NULL,
   restaurant_id INTEGER NOT NULL,
-  foreign key (restaurant_id) references restaurants (id)
+  enabled       BOOLEAN DEFAULT TRUE NOT NULL,
+  foreign key (restaurant_id) references restaurants (id) on delete cascade
 );

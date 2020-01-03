@@ -20,15 +20,19 @@ public class DishTestData {
     public static final int DISH_MC_ID_2 = dishSeq + 4;
     public static final int DISH_MC_ID_3 = dishSeq + 5;
 
-    public static final Dish DISH_BK_1 = new Dish(DISH_BK_ID_1, of(2019, Month.DECEMBER, 22, 15, 20),"vopper", BigDecimal.valueOf(28050), BK_REST);
-    public static final Dish DISH_BK_2 = new Dish(DISH_BK_ID_2, of(2019, Month.DECEMBER, 22, 16, 20),"nuggets", BigDecimal.valueOf(20000), BK_REST);
-    public static final Dish DISH_BK_3 = new Dish(DISH_BK_ID_3, of(2019, Month.DECEMBER, 23, 11, 20),"big king", BigDecimal.valueOf(35000), BK_REST);
-    public static final Dish DISH_MC_1 = new Dish(DISH_MC_ID_1, of(2019, Month.DECEMBER, 22, 12, 20),"mac chicken", BigDecimal.valueOf(25000), MC_REST);
-    public static final Dish DISH_MC_2 = new Dish(DISH_MC_ID_2, of(2019, Month.DECEMBER, 23, 15, 20),"mac free", BigDecimal.valueOf(10000), MC_REST);
-    public static final Dish DISH_MC_3 = new Dish(DISH_MC_ID_3, of(2019, Month.DECEMBER, 23, 16, 20),"happy meal", BigDecimal.valueOf(29000), MC_REST);
+    public static final Dish DISH_BK_1 = new Dish(DISH_BK_ID_1, of(2019, Month.DECEMBER, 22, 15, 20),"vopper", BigDecimal.valueOf(28050), BK_REST, true);
+    public static final Dish DISH_BK_2 = new Dish(DISH_BK_ID_2, of(2019, Month.DECEMBER, 22, 16, 20),"nuggets", BigDecimal.valueOf(20000), BK_REST, false);
+    public static final Dish DISH_BK_3 = new Dish(DISH_BK_ID_3, of(2019, Month.DECEMBER, 23, 11, 20),"big king", BigDecimal.valueOf(35000), BK_REST, true);
+    public static final Dish DISH_MC_1 = new Dish(DISH_MC_ID_1, of(2019, Month.DECEMBER, 22, 12, 20),"mac chicken", BigDecimal.valueOf(25000), MC_REST, true);
+    public static final Dish DISH_MC_2 = new Dish(DISH_MC_ID_2, of(2019, Month.DECEMBER, 23, 15, 20),"mac free", BigDecimal.valueOf(10000), MC_REST, true);
+    public static final Dish DISH_MC_3 = new Dish(DISH_MC_ID_3, of(2019, Month.DECEMBER, 23, 16, 20),"happy meal", BigDecimal.valueOf(29000), MC_REST, true);
 
     public static void assertMatch(Dish actual, Dish expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
+    }
+
+    public static void assertMatch(Iterable<Dish> actual, Iterable<Dish> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields().isEqualTo(expected);
     }
 
     public static Dish getUpdated() {

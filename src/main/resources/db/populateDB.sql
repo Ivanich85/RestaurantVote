@@ -25,10 +25,10 @@ INSERT INTO user_votes (vote_date, user_id, restaurant_id) VALUES
 ('2019-12-22 15:20:00', 100001, 100002);
 
 
-INSERT INTO dishes (creation_date, name, price, restaurant_id) VALUES
-('2019-12-22 15:20:00', 'vopper', 28050, 100002),
-('2019-12-22 16:20:00', 'nuggets', 20000, 100002),
-('2019-12-23 11:20:00', 'big king', 35000, 100002),
-('2019-12-22 12:20:00', 'mac chicken', 25000, 100003),
-('2019-12-23 15:20:00', 'mac free', 10000, 100003),
-('2019-12-23 16:20:00', 'happy meal', 29000, 100003)
+INSERT INTO dishes (creation_date, name, price, restaurant_id, enabled) VALUES
+('2019-12-22 15:20:00', 'vopper', 28050, 100002, 1),
+('2019-12-22 16:20:00', 'nuggets', 20000, 100002, 0),
+('2019-12-23 11:20:00', 'big king', 35000, 100002, 1),
+('2019-12-22 12:20:00', 'mac chicken', 25000, 100003, 1),
+('2019-12-23 15:20:00', 'mac free', 10000, 100003, 1),
+('2019-12-23 16:20:00', 'happy meal', 29000, 100003, 1)

@@ -4,6 +4,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantvote.model.Dish;
 
+import java.util.List;
+import java.util.Objects;
+
 @Repository
 public class DishRepositoryImpl extends AbstractRepository implements DishRepository {
 
@@ -18,15 +21,26 @@ public class DishRepositoryImpl extends AbstractRepository implements DishReposi
     }
 
     @Override
-    public boolean delete(int id) {
-        return manager.createNamedQuery(Dish.DELETE)
-                .setParameter("id", id)
-                .executeUpdate() != 0;
+    public Dish delete(int id) {
+        Dish currentDish = get(id);
+        if (Objects.isNull(currentDish)) {
+            return null;
+        }
+        currentDish.setEnabled(false);
+        return save(currentDish);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Dish get(int id) {
         return manager.find(Dish.class, id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Dish> getAllEnabledForRestaurant(int restaurantId) {
+        return manager.createNamedQuery(Dish.GET_ALL_ENABLED_FOR_RESTAURANT)
+                .setParameter("restaurantId", restaurantId)
+                .getResultList();
     }
 }
