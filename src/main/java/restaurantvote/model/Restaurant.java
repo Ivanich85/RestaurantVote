@@ -16,7 +16,6 @@ import java.util.Set;
 public class Restaurant extends AbstractNamedEntity {
     public static final String DELETE = "Restaurant.delete";
     public static final String GET_WITH_DISHES = "Restaurant.getWithDishes";
-    public static final String GET_WITH_ACTUAL_DISHES = "Restaurant.getWithActualDishes";
     public static final String ALL_SORTED = "Restaurant.allSorted";
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant", cascade = CascadeType.REMOVE, orphanRemoval = true)

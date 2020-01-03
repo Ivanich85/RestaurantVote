@@ -28,7 +28,6 @@ public class VoteServiceTest extends AbstractServiceTest {
         newVote.setId(newId);
         assertMatch(newVote, savedVote);
         assertMatch(service.get(newVote.getId(), newVote.getUser().getId()), newVote);
-
     }
 
     @Test(expected = NotFoundException.class)
@@ -47,6 +46,7 @@ public class VoteServiceTest extends AbstractServiceTest {
         Vote actual = service.get(VOTE_ID, USER_ID);
         Vote expectedVote = new Vote(VOTE_USER_1);
         expectedVote.setUser(USER);
+        expectedVote.setRestaurant(BK_REST);
         assertMatch(actual, expectedVote);
     }
 

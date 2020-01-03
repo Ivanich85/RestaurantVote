@@ -31,8 +31,10 @@ public class DishServiceTest extends AbstractServiceTest {
     @Test
     public void update() {
         Dish updated = getUpdated();
+        updated.setRestaurant(RestaurantTestData.BK_REST);
         service.update(new Dish(updated));
-        assertMatch(service.get(DISH_BK_ID_1), updated);
+        Dish updatedFromDB = service.get(DISH_BK_ID_1);
+        assertMatch(updatedFromDB, updated);
     }
 
     @Test
