@@ -1,16 +1,30 @@
 package restaurantvote.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import restaurantvote.model.Restaurant;
 import restaurantvote.model.User;
 import restaurantvote.model.Vote;
+import restaurantvote.util.SecondVoteDeniedException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static restaurantvote.util.DateTimeUtil.*;
+
 @Repository
 public class UserRepositoryImpl extends AbstractRepository implements UserRepository {
+
+    private final VoteRepository voteRepository;
+
+    @Autowired
+    public UserRepositoryImpl(VoteRepository voteRepository) {
+        this.voteRepository = voteRepository;
+    }
 
     @Override
     public User save(User user) {
@@ -60,7 +74,21 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     }
 
     @Override
-    public Vote addVote(int restaurantId) {
-        return null;
+    public Vote vote(User user, Restaurant restaurant, LocalDateTime voteTime) {
+        List<Vote> userVotes = voteRepository.getByUser(user.getId());
+        Vote previousVote = userVotes.stream()
+                        .filter(v -> v.getCreationDate().toLocalDate().equals(voteTime.toLocalDate()))
+                        .findFirst()
+                        .orElse(null);
+        if (Objects.nonNull(previousVote) && voteTime.toLocalTime().isAfter(SECOND_VOTE_TIME_LIMIT)) {
+            String exceptionMessage = String.format("Повторное голосование разрешено до %s", SECOND_VOTE_TIME_LIMIT.format(TIME_FORMATTER));
+            throw new SecondVoteDeniedException(exceptionMessage);
+        }
+        Vote newVote = Objects.isNull(previousVote) ? new Vote(null, voteTime, restaurant, user) : new Vote(previousVote);
+        newVote.setRestaurant(restaurant);
+        newVote.setCreationDate(voteTime);
+        newVote = voteRepository.save(newVote);
+        return newVote;
     }
+
 }

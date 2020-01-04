@@ -2,6 +2,7 @@ package restaurantvote.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import restaurantvote.AbstractTest;
 import restaurantvote.RestaurantTestData;
 import restaurantvote.model.Dish;
 import restaurantvote.util.NotFoundException;
@@ -13,7 +14,7 @@ import java.util.List;
 import static restaurantvote.DishTestData.*;
 import static restaurantvote.RestaurantTestData.MC_REST;
 
-public class DishServiceTest extends AbstractServiceTest {
+public class DishServiceTest extends AbstractTest {
 
     @Autowired
     private DishService service;

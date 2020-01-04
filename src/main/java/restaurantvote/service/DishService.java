@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class DishService {
-    private DishRepository repository;
+    private final DishRepository repository;
 
     @Autowired
     public DishService(DishRepository repository) {

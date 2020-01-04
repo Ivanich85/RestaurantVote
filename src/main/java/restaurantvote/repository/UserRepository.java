@@ -1,8 +1,10 @@
 package restaurantvote.repository;
 
+import restaurantvote.model.Restaurant;
 import restaurantvote.model.User;
 import restaurantvote.model.Vote;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserRepository {
@@ -18,5 +20,5 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    Vote addVote(int restaurantId);
+    Vote vote(User user, Restaurant restaurant, LocalDateTime voteTime);
 }

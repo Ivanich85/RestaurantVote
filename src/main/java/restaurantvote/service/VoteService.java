@@ -24,6 +24,10 @@ public class VoteService {
         ValidationUtil.checkNotFoundWithId(voteRepository.delete(id, userId), id);
     }
 
+    public void update(Vote vote) throws NotFoundException {
+        ValidationUtil.checkNotFoundWithId(voteRepository.save(vote), vote.getId());
+    }
+
     public Vote get(int id, int userId) throws NotFoundException {
         return ValidationUtil.checkNotFoundWithId(voteRepository.get(id, userId), id);
     }

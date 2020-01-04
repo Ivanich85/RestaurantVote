@@ -2,6 +2,7 @@ package restaurantvote.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import restaurantvote.AbstractTest;
 import restaurantvote.RestaurantTestData;
 import restaurantvote.model.Restaurant;
 import restaurantvote.util.NotFoundException;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static restaurantvote.RestaurantTestData.*;
 
-public class RestaurantServiceTest extends AbstractServiceTest {
+public class RestaurantServiceTest extends AbstractTest {
 
     @Autowired
     private RestaurantService service;
@@ -31,6 +32,13 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         Restaurant updated = getUpdated();
         service.update(new Restaurant(updated));
         assertMatch(service.get(RESTAURANT_ID), updated);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void updateNotFound() {
+        Restaurant updated = getUpdated();
+        service.update(new Restaurant(updated));
+        assertMatch(service.get(RESTAURANT_ID + 5), updated);
     }
 
     @Test(expected = NotFoundException.class)
@@ -58,7 +66,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     public void getWithDishes() {
         Restaurant expected = new Restaurant(BK_REST);
-        assertMatchAllFields(service.getWithDishes(RESTAURANT_ID), expected);
+        assertMatchWithDishes(service.getWithDishes(RESTAURANT_ID), expected);
     }
 
     @Test

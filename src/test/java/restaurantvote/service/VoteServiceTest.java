@@ -2,19 +2,20 @@ package restaurantvote.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import restaurantvote.AbstractTest;
 import restaurantvote.UserTestData;
+import restaurantvote.VoteTestData;
 import restaurantvote.model.Vote;
 import restaurantvote.util.NotFoundException;
 
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
-import static restaurantvote.RestaurantTestData.BK_REST;
-import static restaurantvote.UserTestData.USER;
-import static restaurantvote.UserTestData.USER_ID;
+import static restaurantvote.RestaurantTestData.*;
+import static restaurantvote.UserTestData.*;
 import static restaurantvote.VoteTestData.*;
 
-public class VoteServiceTest extends AbstractServiceTest {
+public class VoteServiceTest extends AbstractTest {
 
     @Autowired
     private VoteService service;
@@ -28,6 +29,22 @@ public class VoteServiceTest extends AbstractServiceTest {
         newVote.setId(newId);
         assertMatch(newVote, savedVote);
         assertMatch(service.get(newVote.getId(), newVote.getUser().getId()), newVote);
+    }
+
+    @Test
+    public void update() {
+        Vote updated = VoteTestData.getUpdated();
+        updated.setUser(USER);
+        service.update(new Vote(updated));
+        assertMatch(service.get(VOTE_ID, USER_ID), updated);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void updateNotAuth() {
+        Vote updated = VoteTestData.getUpdated();
+        updated.setUser(ADMIN);
+        service.update(new Vote(updated));
+        assertMatch(service.get(VOTE_ID, USER_ID), updated);
     }
 
     @Test(expected = NotFoundException.class)
