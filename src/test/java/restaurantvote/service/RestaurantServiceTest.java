@@ -1,18 +1,19 @@
 package restaurantvote.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import restaurantvote.AbstractTest;
+import restaurantvote.AbstractServiceTest;
 import restaurantvote.RestaurantTestData;
 import restaurantvote.model.Restaurant;
 import restaurantvote.util.NotFoundException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static restaurantvote.RestaurantTestData.*;
 
-public class RestaurantServiceTest extends AbstractTest {
+public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
     private RestaurantService service;
@@ -34,22 +35,22 @@ public class RestaurantServiceTest extends AbstractTest {
         assertMatch(service.get(RESTAURANT_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotFound() {
         Restaurant updated = getUpdated();
         service.update(new Restaurant(updated));
-        assertMatch(service.get(RESTAURANT_ID + 5), updated);
+        assertThrows(NotFoundException.class, () -> assertMatch(service.get(RESTAURANT_ID + 5), updated));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void delete() throws Exception {
         service.delete(RESTAURANT_ID);
-        service.get(RESTAURANT_ID);
+        assertThrows(NotFoundException.class, () -> service.get(RESTAURANT_ID));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotFound() throws Exception {
-        service.delete(1);
+        assertThrows(NotFoundException.class, () -> service.delete(1));
     }
 
     @Test
@@ -58,9 +59,9 @@ public class RestaurantServiceTest extends AbstractTest {
         assertMatch(service.get(RESTAURANT_ID), expected);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotFound() throws Exception {
-        service.get(5);
+        assertThrows(NotFoundException.class, () -> service.get(5));
     }
 
     @Test

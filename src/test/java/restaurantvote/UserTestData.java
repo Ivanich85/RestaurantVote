@@ -54,4 +54,7 @@ public class UserTestData {
         updated.setEnabled(false);
         return updated;
     }
+
+    public static TestMatchers<User> USER_MATCHERS = TestMatchers.useFieldsComparator(User.class, "registered", "votes");
+
 }

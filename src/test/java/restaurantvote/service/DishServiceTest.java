@@ -1,11 +1,12 @@
 package restaurantvote.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import restaurantvote.AbstractTest;
+import restaurantvote.AbstractServiceTest;
 import restaurantvote.RestaurantTestData;
 import restaurantvote.model.Dish;
 import restaurantvote.util.NotFoundException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.List;
 import static restaurantvote.DishTestData.*;
 import static restaurantvote.RestaurantTestData.MC_REST;
 
-public class DishServiceTest extends AbstractTest {
+public class DishServiceTest extends AbstractServiceTest {
 
     @Autowired
     private DishService service;
@@ -46,9 +47,9 @@ public class DishServiceTest extends AbstractTest {
         assertMatch(service.get(DISH_BK_ID_2), disabled);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNoFound() throws Exception {
-        service.delete(1);
+        assertThrows(NotFoundException.class, () -> service.delete(1));
     }
 
     @Test
@@ -56,9 +57,9 @@ public class DishServiceTest extends AbstractTest {
         assertMatch(service.get(DISH_BK_ID_1), DISH_BK_1);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotFound() throws Exception {
-        service.get(1);
+        assertThrows(NotFoundException.class, () ->  service.get(1));
     }
 
     @Test

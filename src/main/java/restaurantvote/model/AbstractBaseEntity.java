@@ -1,12 +1,17 @@
 package restaurantvote.model;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE, isGetterVisibility = NONE)
 public abstract class AbstractBaseEntity implements Persistable<Integer>, Serializable {
     public static final int START_SEQ = 100000;
 

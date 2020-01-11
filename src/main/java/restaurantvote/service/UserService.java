@@ -26,8 +26,8 @@ public class UserService {
         return repository.save(user);
     }
 
-    public void update(User user) throws NotFoundException {
-        ValidationUtil.checkNotFoundWithId(repository.save(user), user.getId());
+    public void update(User user) {
+        repository.save(user);
     }
 
     public void delete(int id) throws NotFoundException {

@@ -1,8 +1,8 @@
 package restaurantvote.repository;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import restaurantvote.AbstractTest;
+import restaurantvote.AbstractServiceTest;
 import restaurantvote.VoteTestData;
 import restaurantvote.model.Vote;
 
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static restaurantvote.UserTestData.USER_ID;
 import static restaurantvote.VoteTestData.*;
 
-public class VoteRepositoryImplTest extends AbstractTest {
+public class VoteRepositoryImplTest extends AbstractServiceTest {
 
     @Autowired
     private VoteRepository repository;

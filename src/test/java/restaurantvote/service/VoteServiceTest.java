@@ -1,8 +1,8 @@
 package restaurantvote.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import restaurantvote.AbstractTest;
+import restaurantvote.AbstractServiceTest;
 import restaurantvote.UserTestData;
 import restaurantvote.VoteTestData;
 import restaurantvote.model.Vote;
@@ -11,11 +11,12 @@ import restaurantvote.util.NotFoundException;
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static restaurantvote.RestaurantTestData.*;
 import static restaurantvote.UserTestData.*;
 import static restaurantvote.VoteTestData.*;
 
-public class VoteServiceTest extends AbstractTest {
+public class VoteServiceTest extends AbstractServiceTest {
 
     @Autowired
     private VoteService service;
@@ -39,23 +40,23 @@ public class VoteServiceTest extends AbstractTest {
         assertMatch(service.get(VOTE_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotAuth() {
         Vote updated = VoteTestData.getUpdated();
         updated.setUser(ADMIN);
         service.update(new Vote(updated));
-        assertMatch(service.get(VOTE_ID, USER_ID), updated);
+        assertThrows(NotFoundException.class, () -> assertMatch(service.get(VOTE_ID, USER_ID), updated));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void delete() throws Exception {
         service.delete(VOTE_ID, USER_ID);
-        service.get(VOTE_ID, USER_ID);
+        assertThrows(NotFoundException.class, () -> service.get(VOTE_ID, USER_ID));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotAuth() throws Exception {
-        service.delete(VOTE_ID, 1);
+        assertThrows(NotFoundException.class, () -> service.delete(VOTE_ID, 1));
     }
 
     @Test
@@ -67,8 +68,8 @@ public class VoteServiceTest extends AbstractTest {
         assertMatch(actual, expectedVote);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotAuth() throws Exception {
-        service.get(VOTE_ID, 1);
+        assertThrows(NotFoundException.class, () -> service.get(VOTE_ID, 1));
     }
 }
