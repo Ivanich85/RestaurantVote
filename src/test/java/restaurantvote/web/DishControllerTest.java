@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import restaurantvote.DishTestData;
 import restaurantvote.TestUtil;
-import restaurantvote.UserTestData;
-import restaurantvote.model.User;
-import restaurantvote.service.UserService;
-import restaurantvote.to.UserTo;
+import restaurantvote.model.Dish;
+import restaurantvote.service.DishService;
+import restaurantvote.to.DishTo;
 import restaurantvote.web.json.JsonUtil;
 
 import java.util.Arrays;
@@ -17,71 +17,73 @@ import java.util.Arrays;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static restaurantvote.UserTestData.*;
+import static restaurantvote.DishTestData.*;
+import static restaurantvote.RestaurantTestData.MC_REST;
 
-public class AdminControllerTest extends AbstractControllerTest {
-    private final static String REST_URL = AdminController.ADMIN_REST_URL + "/";
+class DishControllerTest extends AbstractControllerTest {
+
+    private final static String REST_URL = DishController.DISH_REST_URL + "/";
 
     @Autowired
-    private UserService service;
+    private DishService service;
 
     @Test
-    public void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID))
+    void get() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + DISH_BK_ID_1))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHERS.contentJson(UserTo.createTo(ADMIN)));
+                .andExpect(DISH_TO_MATCHERS.contentJson(DishTo.createTo(DISH_BK_1)));
     }
 
     @Test
-    public void getByEmail() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/by?email=admin@gmail.com"))
+    void getAllEnabledForRestaurant() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/restaurant?id=100002"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHERS.contentJson(UserTo.createTo(ADMIN)));
+                .andExpect(DISH_TO_MATCHERS.contentJson(DishTo.createTos(Arrays.asList(DISH_BK_1, DISH_BK_3))));
     }
 
     @Test
-    public void getAll() throws Exception {
+    void getAll() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHERS.contentJson(UserTo.createTos(Arrays.asList(ADMIN, USER))));
+                .andExpect(DISH_TO_MATCHERS.contentJson(DishTo.createTos(Arrays.asList(DISH_MC_1, DISH_BK_1, DISH_BK_2, DISH_BK_3, DISH_MC_2, DISH_MC_3))));
     }
 
     @Test
-    public void create() throws Exception {
-        User expected = new User(null, "new", "newEmail@mail.ru", "pass1", userRoles, userVotes);
+    void create() throws Exception {
+        Dish expected = new Dish(null, "Muffin", 18000, MC_REST, true);
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isCreated());
-        User returned = TestUtil.readFromJson(action, User.class);
+        Dish returned = TestUtil.readFromJson(action, Dish.class);
         expected.setId(returned.getId());
         assertMatch(returned, expected);
-        assertMatch(service.getAll(), ADMIN, USER, expected);
+        assertMatch(service.getAll(), Arrays.asList(DISH_MC_1, DISH_BK_1, DISH_BK_2, DISH_BK_3, DISH_MC_2, DISH_MC_3, expected));
     }
 
     @Test
-    public void update() throws Exception {
-        User updated = UserTestData.getUpdated();
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+    void update() throws Exception {
+        Dish updated = DishTestData.getUpdated();
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + DISH_BK_ID_1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
-        assertMatch(service.get(USER_ID), updated);
+        assertMatch(service.get(DISH_BK_ID_1), updated);
     }
 
     @Test
-    public void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + USER_ID))
+    void delete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + DISH_BK_ID_1))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        User deletedUser = getDeleted();
-        assertMatch(service.get(USER_ID), deletedUser);
+        Dish deletedDish = new Dish(DISH_BK_1);
+        deletedDish.setEnabled(false);
+        assertMatch(service.get(DISH_BK_ID_1), deletedDish);
     }
-
 }

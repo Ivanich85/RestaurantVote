@@ -22,7 +22,7 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     public void create() {
-        Dish newDish = new Dish(DISH_BK_ID_1, "vopper", BigDecimal.valueOf(28050), MC_REST, true);
+        Dish newDish = new Dish(DISH_BK_ID_1, "vopper", 28050, MC_REST, true);
         Dish created = service.create(newDish);
         Integer newId = created.getId();
         newDish.setId(newId);
@@ -60,6 +60,13 @@ public class DishServiceTest extends AbstractServiceTest {
     @Test
     public void getNotFound() throws Exception {
         assertThrows(NotFoundException.class, () ->  service.get(1));
+    }
+
+    @Test
+    public void getAll() {
+        List<Dish> expected = Arrays.asList(DISH_MC_1, DISH_BK_1, DISH_BK_2, DISH_BK_3, DISH_MC_2, DISH_MC_3);
+        List<Dish> actual = service.getAll();
+        assertMatch(expected, actual);
     }
 
     @Test

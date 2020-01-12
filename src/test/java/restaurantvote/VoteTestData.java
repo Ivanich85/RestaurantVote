@@ -1,6 +1,7 @@
 package restaurantvote;
 
 import restaurantvote.model.Vote;
+import restaurantvote.to.VoteTo;
 
 import java.time.Month;
 
@@ -18,7 +19,6 @@ public class VoteTestData {
     public static final Vote VOTE_USER_2 = new Vote(VOTE_ID + 1, of(2019, Month.DECEMBER, 23, 16, 20), MC_REST);
     public static final Vote VOTE_USER_3 = new Vote(VOTE_ID + 2, of(2019, Month.DECEMBER, 24, 11, 20), MC_REST);
     public static final Vote VOTE_USER_4 = new Vote(VOTE_ID + 3, of(2019, Month.DECEMBER, 25, 12, 20), MC_REST);
-
     public static final Vote VOTE_ADMIN_1 = new Vote(VOTE_ID + 4,of(2019, Month.DECEMBER, 23, 15, 20), BK_REST);
 
     public static void assertMatch(Vote actual, Vote expected) {
@@ -38,4 +38,7 @@ public class VoteTestData {
         updated.setRestaurant(MC_REST);
         return updated;
     }
+
+    public static TestMatchers<VoteTo> VOTE_TO_MATCHERS = TestMatchers.useFieldsComparator(VoteTo.class, "creationDate", "userName", "userId");
+
 }

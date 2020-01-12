@@ -1,23 +1,26 @@
 package restaurantvote.to;
 
-import restaurantvote.model.Dish;
+import org.apache.commons.collections.CollectionUtils;
+import restaurantvote.model.Restaurant;
 import restaurantvote.model.Vote;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class RestaurantTo {
+    private Integer id;
+    private String name;
+    private Integer rating;
+    private List<DishTo> dishTos;
 
-    private final Integer id;
-    private final String name;
-    private final Set<Vote> ratings;
-    private final Set<Dish> dishes;
-
-    public RestaurantTo(Integer id, String name, Set<Vote> ratings, Set<Dish> dishes) {
-        this.id = id;
-        this.name = name;
-        this.ratings = ratings;
-        this.dishes = dishes;
+    public RestaurantTo createTo(Restaurant restaurant) {
+        RestaurantTo to = new RestaurantTo();
+        to.id = restaurant.getId();
+        to.name = restaurant.getName();
+        Set<Vote> ratings = restaurant.getRatings();
+        to.rating = CollectionUtils.isNotEmpty(ratings) ? ratings.size() : 0;
+        to.dishTos = DishTo.createTos(restaurant.getDishes());
+        return to;
     }
 
     public Integer getId() {
@@ -28,21 +31,25 @@ public class RestaurantTo {
         return name;
     }
 
-    public Set<Vote> getRatings() {
-        return ratings;
+    public Integer getRating() {
+        return rating;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
+    public List<DishTo> getDishTos() {
+        return dishTos;
     }
 
     @Override
     public String toString() {
-        return "RestaurantTo {" +
-                "id=" + id +
-                ", name=" + name +
-                ", rating='" + ratings +
-                ", dishes='" + Arrays.deepToString(dishes.toArray()) + '\'' +
-                '}';
+        StringBuilder builder = new StringBuilder("RestaurantTo: {");
+        builder
+                .append("id=" + id)
+                .append(", name=" + name)
+                .append(", rating=" + rating)
+                .append(", dishTos=[" + dishTos)
+                .append("]")
+                .append("}");
+        return builder.toString();
     }
+
 }

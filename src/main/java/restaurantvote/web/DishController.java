@@ -6,61 +6,60 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import restaurantvote.model.User;
-import restaurantvote.service.UserService;
-import restaurantvote.to.UserTo;
+import restaurantvote.model.Dish;
+import restaurantvote.service.DishService;
+import restaurantvote.to.DishTo;
 
 import java.net.URI;
 import java.util.List;
 
-import static restaurantvote.to.UserTo.*;
+import static restaurantvote.to.DishTo.createTo;
+import static restaurantvote.to.DishTo.createTos;
 import static restaurantvote.util.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping(value = AdminController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminController {
-
-    public static final String ADMIN_REST_URL = "/admin/users";
+@RequestMapping(value = DishController.DISH_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class DishController {
+    public static final String DISH_REST_URL = "/dishes";
 
     @Autowired
-    private UserService userService;
+    private DishService service;
 
     @GetMapping("/{id}")
-    public UserTo get(@PathVariable int id) {
-        return createTo(userService.get(id));
+    public DishTo get(@PathVariable int id) {
+        return createTo(service.get(id));
     }
 
-    @GetMapping("/by")
-    public UserTo getByEmail(@RequestParam String email) {
-        return createTo(userService.getByEmail(email));
+    @GetMapping("/restaurant")
+    public List<DishTo> getAllEnabledForRestaurant(@RequestParam int id) {
+        return createTos(service.getAllEnabledForRestaurant(id));
     }
 
-    @GetMapping
-    public List<UserTo> getAll() {
-        return createTos(userService.getAll());
+    @GetMapping()
+    public List<DishTo> getAll() {
+        return createTos(service.getAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User created = userService.create(user);
+    public ResponseEntity<Dish> create(@RequestBody Dish dish) {
+        Dish created = service.create(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(ADMIN_REST_URL + "/{id}")
+                .path(DISH_REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
-        assureIdConsistent(user, id);
-        userService.update(user);
+    public void update(@RequestBody Dish dish, @PathVariable int id) {
+        assureIdConsistent(dish, id);
+        service.update(dish);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        userService.delete(id);
+        service.delete(id);
     }
-
 }

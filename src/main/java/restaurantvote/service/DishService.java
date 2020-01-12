@@ -34,6 +34,10 @@ public class DishService {
         return ValidationUtil.checkNotFoundWithId(repository.get(id), id);
     }
 
+    public List<Dish> getAll() {
+        return repository.getAll();
+    }
+
     public List<Dish> getAllEnabledForRestaurant(int restaurantId) {
         return repository.getAllEnabledForRestaurant(restaurantId);
     }

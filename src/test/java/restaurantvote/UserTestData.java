@@ -3,6 +3,7 @@ package restaurantvote;
 import restaurantvote.model.User;
 import restaurantvote.model.values.Role;
 import restaurantvote.model.Vote;
+import restaurantvote.to.UserTo;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -17,8 +18,8 @@ public class UserTestData {
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
 
-    public static final Set<Role> userRoles = Stream.of( Role.ROLE_USER).collect(Collectors.toSet());
-    public static final Set<Role> adminRoles = Stream.of( Role.ROLE_ADMIN).collect(Collectors.toSet());
+    public static final Set<Role> userRoles = Stream.of(Role.ROLE_USER).collect(Collectors.toSet());
+    public static final Set<Role> adminRoles = Stream.of(Role.ROLE_ADMIN).collect(Collectors.toSet());
 
     public static final Set<Vote> userVotes = Stream.of(VOTE_USER_1, VOTE_USER_2, VOTE_USER_3, VOTE_USER_4).collect(Collectors.toSet());
     public static final Set<Vote> adminVotes = Stream.of(VOTE_ADMIN_1).collect(Collectors.toSet());
@@ -55,6 +56,5 @@ public class UserTestData {
         return updated;
     }
 
-    public static TestMatchers<User> USER_MATCHERS = TestMatchers.useFieldsComparator(User.class, "registered", "votes");
-
+    public static TestMatchers<UserTo> USER_TO_MATCHERS = TestMatchers.useFieldsComparator(UserTo.class, "registered", "voteTos");
 }

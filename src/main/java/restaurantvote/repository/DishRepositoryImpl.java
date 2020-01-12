@@ -38,6 +38,13 @@ public class DishRepositoryImpl extends AbstractRepository implements DishReposi
 
     @Override
     @Transactional(readOnly = true)
+    public List<Dish> getAll() {
+        return manager.createNamedQuery(Dish.GET_ALL)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Dish> getAllEnabledForRestaurant(int restaurantId) {
         return manager.createNamedQuery(Dish.GET_ALL_ENABLED_FOR_RESTAURANT)
                 .setParameter("restaurantId", restaurantId)

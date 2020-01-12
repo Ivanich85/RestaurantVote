@@ -2,7 +2,6 @@ package restaurantvote.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,20 +10,26 @@ import java.time.LocalDateTime;
         @NamedNativeQuery(name = Dish.DELETE, query = "UPDATE dishes set enabled = 0 where id = :id")
 })
 @NamedQueries({
+        // Принимаем, что админ удаляет старую еду, отмечая ее как неактивную
         @NamedQuery(name = Dish.GET_ALL_ENABLED_FOR_RESTAURANT,
-                query = "select d from Dish d where d.restaurant.id = :restaurantId and d.enabled = true")
+                query = "select d from Dish d where d.restaurant.id = :restaurantId and d.enabled = true"),
+        @NamedQuery(name = Dish.GET_ALL, query = "select d from Dish d order by d.creationDate")
 })
 public class Dish extends AbstractNamedEntity {
     public final static String DELETE = "Dish.delete";
+    public final static String GET_ALL = "Dish.getAll";
     public final static String GET_ALL_ENABLED_FOR_RESTAURANT = "Dish.getAllEnabledForRestaurant";
 
     @Column(name = "creation_date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private LocalDateTime creationDate;
 
+    /**
+     * Стоимость в копейках
+     */
     @Column(name = "price", nullable = false)
     @NotNull
-    private BigDecimal price;
+    private Integer price;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -37,11 +42,11 @@ public class Dish extends AbstractNamedEntity {
 
     public Dish(){}
 
-    public Dish(Integer id, String name, BigDecimal price, Restaurant restaurant, Boolean enabled) {
+    public Dish(Integer id, String name, Integer price, Restaurant restaurant, Boolean enabled) {
         this(id, LocalDateTime.now(), name, price, restaurant, enabled);
     }
 
-    public Dish(Integer id, LocalDateTime creationDate, String name, BigDecimal price, Restaurant restaurant, Boolean enabled) {
+    public Dish(Integer id, LocalDateTime creationDate, String name, Integer price, Restaurant restaurant, Boolean enabled) {
         super(id, name);
         this.creationDate = creationDate;
         this.price = price;
@@ -57,11 +62,11 @@ public class Dish extends AbstractNamedEntity {
         this.enabled = dish.enabled;
     }
 
-    public BigDecimal getPrice() {
-        return BigDecimal.valueOf(price.ROUND_HALF_EVEN);
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
