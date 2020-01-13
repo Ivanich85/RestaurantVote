@@ -9,12 +9,15 @@ import restaurantvote.model.Vote;
 import restaurantvote.util.NotFoundException;
 
 import java.time.Month;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.time.LocalDateTime.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static restaurantvote.RestaurantTestData.*;
 import static restaurantvote.UserTestData.*;
 import static restaurantvote.VoteTestData.*;
+import static restaurantvote.VoteTestData.assertMatch;
 
 public class VoteServiceTest extends AbstractServiceTest {
 
@@ -71,5 +74,13 @@ public class VoteServiceTest extends AbstractServiceTest {
     @Test
     public void getNotAuth() throws Exception {
         assertThrows(NotFoundException.class, () -> service.get(VOTE_ID, 1));
+    }
+
+    @Test
+    public void getAllByUser() {
+        List<Vote> actual = service.getAllByUser(ADMIN_ID);
+        List<Vote> expected = Arrays.asList(VOTE_ADMIN_1);
+        assertMatch(actual, expected);
+
     }
 }

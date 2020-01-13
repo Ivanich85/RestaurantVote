@@ -3,6 +3,7 @@ package restaurantvote;
 import restaurantvote.model.Dish;
 import restaurantvote.model.Restaurant;
 import restaurantvote.model.Vote;
+import restaurantvote.to.RestaurantTo;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -47,5 +48,7 @@ public class RestaurantTestData {
         updated.setName("UpdatedName");
         return updated;
     }
+
+    public static TestMatchers<RestaurantTo> RESTAURANT_TO_MATCHERS = TestMatchers.useFieldsComparator(RestaurantTo.class, "dishTos", "rating");
 
 }

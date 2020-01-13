@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.LazyInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import restaurantvote.model.Restaurant;
 import restaurantvote.model.User;
 import restaurantvote.model.Vote;
 
@@ -24,7 +25,8 @@ public class VoteTo {
         VoteTo to = new VoteTo();
         to.id = vote.getId();
         to.creationDate = vote.getCreationDate();
-        to.restaurantName = vote.getRestaurant().getName();
+        Restaurant restaurant = vote.getRestaurant();
+        to.restaurantName = Objects.nonNull(restaurant) ? restaurant.getName() : null;
         User user = vote.getUser();
         to.userName = Objects.nonNull(user) ? user.getName() : null;
         to.userId = Objects.nonNull(user) ? user.getId() : null;

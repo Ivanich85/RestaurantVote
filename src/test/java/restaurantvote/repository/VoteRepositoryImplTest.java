@@ -21,14 +21,14 @@ public class VoteRepositoryImplTest extends AbstractServiceTest {
 
     @Test
     public void getByUserAndRestaurant() {
-        List<Vote> actual = repository.getByUser(USER_ID);
+        List<Vote> actual = repository.getAllByUser(USER_ID);
         List<Vote> expected = Stream.of(VOTE_USER_4, VOTE_USER_3, VOTE_USER_2, VOTE_USER_1).collect(Collectors.toList());
         VoteTestData.assertMatch(actual, expected);
     }
 
     @Test
     public void getByUserAndRestaurantNotFoundUser() {
-        List<Vote> actual = repository.getByUser(10);
+        List<Vote> actual = repository.getAllByUser(10);
         List<Vote> expected = new ArrayList<>();
         VoteTestData.assertMatch(actual, expected);
     }

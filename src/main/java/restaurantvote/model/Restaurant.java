@@ -28,13 +28,13 @@ public class Restaurant extends AbstractNamedEntity {
         super();
     }
 
-    public Restaurant(int id, String name) {
+    public Restaurant(Integer id, String name) {
         super(id, name);
         this.ratings = null;
         this.dishes = null;
     }
 
-    public Restaurant(int id, String name, Set<Vote> ratings, Set<Dish> dishes) {
+    public Restaurant(Integer id, String name, Set<Vote> ratings, Set<Dish> dishes) {
         super(id, name);
         this.ratings = ratings;
         this.dishes = dishes;

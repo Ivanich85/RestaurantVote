@@ -1,6 +1,5 @@
 package restaurantvote.web;
 
-
 import restaurantvote.model.Restaurant;
 import restaurantvote.model.User;
 import restaurantvote.model.Vote;

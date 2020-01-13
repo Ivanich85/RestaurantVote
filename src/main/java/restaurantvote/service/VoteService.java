@@ -7,6 +7,8 @@ import restaurantvote.repository.VoteRepository;
 import restaurantvote.util.NotFoundException;
 import restaurantvote.util.ValidationUtil;
 
+import java.util.List;
+
 @Service
 public class VoteService {
     private final VoteRepository voteRepository;
@@ -30,5 +32,9 @@ public class VoteService {
 
     public Vote get(int id, int userId) throws NotFoundException {
         return ValidationUtil.checkNotFoundWithId(voteRepository.get(id, userId), id);
+    }
+
+    public List<Vote> getAllByUser(int userId) {
+        return voteRepository.getAllByUser(userId);
     }
 }

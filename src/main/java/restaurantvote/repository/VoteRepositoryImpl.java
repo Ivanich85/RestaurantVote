@@ -39,7 +39,7 @@ public class VoteRepositoryImpl extends AbstractRepository implements VoteReposi
 
     @Override
     @Transactional(readOnly = true)
-    public List<Vote> getByUser(int userId) {
+    public List<Vote> getAllByUser(int userId) {
         return manager.createNamedQuery(Vote.GET_BY_USER)
                 .setParameter("userId", userId)
                 .getResultList();

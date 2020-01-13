@@ -74,7 +74,7 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
 
     @Override
     public Vote vote(User user, Restaurant restaurant, LocalDateTime voteTime) {
-        List<Vote> userVotes = voteRepository.getByUser(user.getId());
+        List<Vote> userVotes = voteRepository.getAllByUser(user.getId());
         Vote previousVote = userVotes.stream()
                         .filter(v -> v.getCreationDate().toLocalDate().equals(voteTime.toLocalDate()))
                         .findFirst()

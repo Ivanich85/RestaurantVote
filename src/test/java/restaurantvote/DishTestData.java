@@ -34,6 +34,10 @@ public class DishTestData {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
     }
 
+    public static void assertMatchTo(Iterable<DishTo> actual, Iterable<DishTo> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("restaurantName").isEqualTo(expected);
+    }
+
     public static Dish getUpdated() {
         Dish updated = new Dish(DISH_BK_1);
         updated.setName("Super vopper");
@@ -42,6 +46,5 @@ public class DishTestData {
     }
 
     public static TestMatchers<DishTo> DISH_TO_MATCHERS = TestMatchers.useFieldsComparator(DishTo.class, "creationDate", "restaurantName");
-
 
 }

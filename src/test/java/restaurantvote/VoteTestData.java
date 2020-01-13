@@ -10,6 +10,7 @@ import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static restaurantvote.RestaurantTestData.BK_REST;
 import static restaurantvote.RestaurantTestData.MC_REST;
+import static restaurantvote.UserTestData.USER;
 import static restaurantvote.model.AbstractBaseEntity.START_SEQ;
 
 public class VoteTestData {
@@ -25,8 +26,16 @@ public class VoteTestData {
         assertThat(actual).isEqualToIgnoringGivenFields(expected);
     }
 
+    public static void assertMatchTo(VoteTo actual, VoteTo expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "creationDate");
+    }
+
     public static void assertMatch(Iterable<Vote> actual, Iterable<Vote> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("user").isEqualTo(expected);
+    }
+
+    public static void assertMatchTosById(Iterable<VoteTo> actual, Iterable<VoteTo> expected) {
+        assertThat(actual).usingElementComparatorIgnoringFields("creationDate", "restaurantName", "userName", "userId").isEqualTo(expected);
     }
 
     public static void assertMatchVoteId(Iterable<Vote> actual, Iterable<Vote> expected) {
@@ -35,6 +44,7 @@ public class VoteTestData {
 
     public static Vote getUpdated() {
         Vote updated = new Vote(VOTE_USER_1);
+        updated.setUser(USER);
         updated.setRestaurant(MC_REST);
         return updated;
     }

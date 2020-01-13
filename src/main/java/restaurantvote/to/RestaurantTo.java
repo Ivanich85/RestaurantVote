@@ -4,8 +4,11 @@ import org.apache.commons.collections.CollectionUtils;
 import restaurantvote.model.Restaurant;
 import restaurantvote.model.Vote;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RestaurantTo {
     private Integer id;
@@ -13,7 +16,7 @@ public class RestaurantTo {
     private Integer rating;
     private List<DishTo> dishTos;
 
-    public RestaurantTo createTo(Restaurant restaurant) {
+    public static RestaurantTo createTo(Restaurant restaurant) {
         RestaurantTo to = new RestaurantTo();
         to.id = restaurant.getId();
         to.name = restaurant.getName();
@@ -21,6 +24,11 @@ public class RestaurantTo {
         to.rating = CollectionUtils.isNotEmpty(ratings) ? ratings.size() : 0;
         to.dishTos = DishTo.createTos(restaurant.getDishes());
         return to;
+    }
+
+    public static List<RestaurantTo> createTos(Collection<Restaurant> restaurants) {
+        return CollectionUtils.isEmpty(restaurants) ?
+                new ArrayList<>() : restaurants.stream().map(r -> createTo(r)).collect(Collectors.toList());
     }
 
     public Integer getId() {
