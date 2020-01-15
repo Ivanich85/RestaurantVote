@@ -20,7 +20,7 @@ import static restaurantvote.util.ValidationUtil.assureIdConsistent;
 @RestController
 @RequestMapping(value = DishController.DISH_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishController {
-    public static final String DISH_REST_URL = "/dishes";
+    public static final String DISH_REST_URL = "/rest/dishes";
 
     @Autowired
     private DishService service;

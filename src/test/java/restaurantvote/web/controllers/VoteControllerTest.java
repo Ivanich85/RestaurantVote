@@ -11,13 +11,11 @@ import restaurantvote.service.VoteService;
 import restaurantvote.to.VoteTo;
 import restaurantvote.web.json.JsonUtil;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static restaurantvote.RestaurantTestData.MC_REST;
 import static restaurantvote.UserTestData.USER;
 import static restaurantvote.VoteTestData.*;
 
@@ -43,19 +41,6 @@ class VoteControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_TO_MATCHERS.contentJson(VoteTo.createTos(Arrays.asList(VOTE_USER_4, VOTE_USER_3, VOTE_USER_2, VOTE_USER_1))));
-    }
-
-    @Test
-    void create() throws Exception {
-        Vote expected = new Vote(null, LocalDateTime.now(), MC_REST, USER);
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isCreated());
-        Vote returned = TestUtil.readFromJson(action, Vote.class);
-        expected.setId(returned.getId());
-        assertMatch(returned, expected);
-        assertMatchVoteId(service.getAllByUser(USER.getId()), Arrays.asList(expected, VOTE_USER_4, VOTE_USER_3, VOTE_USER_2, VOTE_USER_1));
     }
 
     @Test

@@ -22,7 +22,7 @@ import static restaurantvote.util.ValidationUtil.assureIdConsistent;
 @RestController
 @RequestMapping(value = VoteController.VOTE_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteController {
-    public static final String VOTE_REST_URL = "/votes";
+    public static final String VOTE_REST_URL = "/rest/votes";
     private User authUser = SecurityUtil.getAuthUser();
 
     @Autowired
@@ -36,16 +36,6 @@ public class VoteController {
     @GetMapping("/user")
     public List<VoteTo> getByUser() {
         return createTos(service.getAllByUser(authUser.getId()));
-    }
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Vote> create(@RequestBody Vote vote) {
-        Vote created = service.create(vote);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(VOTE_REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

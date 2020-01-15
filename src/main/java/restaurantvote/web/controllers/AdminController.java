@@ -20,7 +20,7 @@ import static restaurantvote.util.ValidationUtil.assureIdConsistent;
 @RequestMapping(value = AdminController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
 
-    public static final String ADMIN_REST_URL = "/admin/users";
+    public static final String ADMIN_REST_URL = "/rest/admin/users";
 
     @Autowired
     private UserService userService;

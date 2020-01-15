@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     private RestaurantService restaurantService;
 
-    public static final String USER_REST_URL = "/user";
+    public static final String USER_REST_URL = "/rest/user";
 
     @PutMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

@@ -4,6 +4,9 @@ import org.apache.commons.collections.CollectionUtils;
 import restaurantvote.model.User;
 import restaurantvote.model.values.Role;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,8 +15,15 @@ import static restaurantvote.to.TpUtils.fromSetToList;
 
 public class UserTo {
     private Integer id;
+
+    @NotEmpty
     private String name;
+
+    @Size(min = 5, max = 15, message = " must between 5 and 15 characters")
     private String password;
+
+    @NotEmpty
+    @Email
     private String email;
     private LocalDateTime registered;
     private List<Role> roles;
