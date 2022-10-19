@@ -27,7 +27,7 @@
         <tomcat.version>9.0.27</tomcat.version>
 
         <!--JSON-->
-        <jackson-json.version>2.10.1</jackson-json.version>
+        <jackson-json.version>2.13.4.1</jackson-json.version>
 
         <!-- Tests -->
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
